@@ -1,0 +1,256 @@
+.pageTitle {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  color: #d70137;
+}
+
+.breadcumbs {
+  margin-top: 8px !important;
+}
+
+.breadActive {
+  color: #5c5c5c;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+.breadActive:hover {
+  color: #181818;
+}
+
+.breadUnactive {
+  font-weight: 700;
+  color: #181818;
+}
+
+.content {
+  background: #fff;
+  margin-top: 24px;
+  padding: 24px;
+  -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  border-radius: 2px;
+  margin-top: 24px;
+}
+
+.addAdmin {
+  flex: 1;
+}
+
+.contentSidebar {
+  background: #ffffff;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 24px 16px;
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  justify-content: center;
+  height: 100px;
+}
+
+.navLink {
+  text-decoration: none;
+  color: rgba(92, 92, 92, 1);
+  font-weight: 700;
+}
+
+.navLinkColor {
+  text-decoration: none;
+  color: rgba(92, 92, 92, 1);
+  font-weight: 700;
+  color: #d70137;
+}
+
+.navLink:hover,
+.navLinkColor:hover {
+  color: #d70137;
+}
+
+.addAdminContainer {
+  flex: 1;
+  background: #ffffff;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px 24px 24px 24px;
+}
+
+.addAdminTitle {
+  font-weight: 700;
+  font-size: 16px;
+  color: #d70137;
+}
+.addAdminTitle {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #d70137;
+}
+
+.content .form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.formGroup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.formLabel {
+  width: 15%;
+}
+.formControl {
+  width: 500px;
+}
+
+.formControl:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px rgb(24 144 255 / 20%);
+  border-right-width: 1px;
+  outline: 0;
+}
+
+.msgPwError {
+  margin-left: 17.5%;
+  font-size: 14px;
+  margin-top: -10px;
+  color: #cd1111;
+}
+
+.btnAdd {
+  width: 200px;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #d70137;
+  color: #fff;
+  font-weight: bold;
+}
+
+.loadingConfirm {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.btnAddDisable {
+  width: 100px;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  margin: 0px auto;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* modal */
+.modalSucces {
+  overflow: hidden !important;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ModalImageSucces {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  background-color: #00c247;
+}
+
+.iconSucces {
+  color: #fff;
+  font-size: 56px;
+}
+
+.ModalTextSucces {
+  text-align: center;
+  padding: 16px 0px;
+}
+
+.modalTitleSucces {
+  color: #5c5c5c;
+  font-size: 20px;
+}
+
+.modaldescSucces {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.btnCloseModalSucces {
+  background-color: #00c247;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  border: none;
+}
+
+.btnCloseModalSucces:hover {
+  background-color: #02a13c;
+  color: #fff;
+}
+
+/* failed */
+.modalFailed {
+  overflow: hidden !important;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ModalImageFailed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  background-color: #ed2121;
+}
+
+.iconFailed {
+  color: #fff;
+  font-size: 56px;
+}
+
+.ModalTextFailed {
+  text-align: center;
+  padding: 16px 0px;
+}
+
+.modalTitleFailed {
+  color: #5c5c5c;
+  font-size: 20px;
+}
+
+.modaldescFailed {
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.btnCloseModalFailed {
+  background-color: #ed2121;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-bottom: 16px;
+  border: none;
+}
+
+.btnCloseModalFailed:hover {
+  background-color: #cd1111;
+  color: #fff;
+}

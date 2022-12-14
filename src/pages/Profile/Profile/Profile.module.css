@@ -1,0 +1,97 @@
+.wrapper {
+  background-color: #f3f4f5;
+  min-height: calc(100vh-60px);
+}
+
+.main {
+  display: flex;
+  width: 100%;
+}
+
+.content {
+  margin-left: 224px !important;
+  margin-top: 84px !important;
+  flex: 1;
+  margin: 24px auto;
+  min-height: calc(100vh - 70px);
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  gap: 16px;
+}
+
+.left {
+  flex: 1;
+  padding: 0px 24px;
+}
+
+.right {
+  flex: 7;
+  background-color: #fff;
+  padding: 24px;
+  box-sizing: border-box;
+  min-width: 0;
+  background: #fff;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 13%);
+  border-radius: 0.125rem;
+}
+
+.profileDetailLeft {
+  display: flex;
+  gap: 16px;
+}
+
+.profilePictureContainerLeft {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profilePictureItemLeft {
+  width: 76px;
+  height: auto;
+}
+
+.profileNameLeft {
+  margin-top: 16px;
+}
+
+.menuProfile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.menuIcon {
+  font-size: 20px;
+  color: #d70137;
+}
+
+.menuIconNotification {
+  font-size: 20px;
+  color: #d70137;
+}
+
+.menuText {
+  font-size: 16px;
+  color: #181818;
+  text-decoration: none;
+}
+
+/* responsive */
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 1000px;
+  }
+}

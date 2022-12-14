@@ -1,0 +1,71 @@
+.dicom-wrapper {
+  background-color: white;
+  border: 6px;
+  border-style: groove;
+  margin: 24px;
+  max-width: 100%;
+  height: 85vh;
+  display: flex;
+  gap: 8px;
+  padding: 24px;
+}
+
+.dicom-menu {
+  width: 4%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.dicom-init {
+  width: 100%;
+}
+
+.dicom-init__inner {
+  height: 400px;
+}
+
+.dicom-test {
+  background-color: #f39c12;
+}
+
+.dicom-view {
+  width: 70%;
+}
+
+.dicom-info {
+  max-width: 26%;
+}
+
+.dicom-table {
+  max-width: 275px;
+  overflow: auto;
+}
+
+.menu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #565656;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.menu-card__icon {
+  font-size: 20px;
+  color: #fff;
+}
+
+/*custom inpu file*/
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  background-color: #565656;
+}

@@ -1,0 +1,105 @@
+.wrapper {
+}
+
+.titleContainer {
+}
+
+.titleText {
+  color: #181818;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.titleDesc {
+  margin-top: 4px;
+  font-size: 16px;
+  color: #181818;
+}
+
+.bankCards {
+  margin-top: 24px;
+  margin-bottom: 56px;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.bankCardAdd {
+  width: 250px;
+  height: 170px;
+  background-color: transparent;
+  border: 1px dashed #d70137;
+  border-radius: 8px;
+}
+
+.plusIcon {
+  color: #d70137;
+  font-size: 28px;
+}
+
+.bankCard {
+  width: 250px;
+  height: 170px;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.bankCard:hover {
+  cursor: pointer;
+}
+.bankTop {
+  background: #d70137;
+  height: 75px;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+}
+
+.bankName {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.bankBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 8px;
+}
+
+.bankDetailTop {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.iconCheck {
+  color: #00c247;
+}
+.checkText {
+  font-size: 14px;
+  color: #00c247;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.btnDelBank {
+  background-color: transparent;
+  color: #d70137;
+  border: none;
+  text-align: left;
+  width: 150px;
+}

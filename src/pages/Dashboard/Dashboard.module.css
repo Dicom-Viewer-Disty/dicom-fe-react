@@ -1,0 +1,197 @@
+.pageTitle {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  color: #d70137;
+}
+
+.breadcumbs {
+  margin-top: 8px !important;
+}
+
+.breadActive {
+  color: #5c5c5c;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.breadActive:hover {
+  color: #181818;
+}
+
+.breadUnactive {
+  font-weight: 700;
+  color: #181818;
+}
+
+/* main */
+.carouselWrapper {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.main {
+  margin-top: 24px;
+}
+
+.carouselItem {
+  width: 100%;
+  height: 400px;
+}
+
+.imageCarousel {
+  width: 100%;
+  min-height: 400px;
+  object-fit: cover;
+}
+
+/* kriteria utama */
+.dashboardKeuanganContainer {
+  background: #fff;
+  margin-top: 24px;
+  padding: 24px;
+  -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  border-radius: 2px;
+}
+
+.dashboardKeuanganTitle {
+  font-size: 18px;
+  display: block;
+  margin: 0;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.dashboardKeuanganDesc {
+  margin-top: 4px;
+}
+
+.dashboardKeuanganBoxs {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dashboardKeuanganCard {
+  width: 225px;
+  height: 110px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 16px 8px 16px 16px;
+  min-width: 185px;
+  background: #fff;
+  border-top: 4px solid rgb(38, 115, 221);
+}
+
+.dashboardKeuanganCardGreen {
+  width: 225px;
+  height: 110px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 16px 8px 16px 16px;
+  min-width: 185px;
+  background: #fff;
+  border-top: 4px solid rgb(38, 170, 153);
+}
+
+.dashboardKeuanganCardYellow {
+  width: 225px;
+  height: 110px;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 16px 8px 16px 16px;
+  min-width: 185px;
+  background: #fff;
+  border-top: 4px solid rgb(255, 187, 0);
+}
+
+.dashboardKeuanganCardTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboardKeuanganCardTopTitle {
+  font-weight: 500;
+  line-height: 18px;
+  flex: 3;
+}
+
+.dashboardKeuanganCardValue {
+  margin-top: 16px;
+}
+
+.dashboardKeuanganCardValueSpan {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.excIcon {
+  font-size: 16px;
+  flex: 1;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #5c5c5c;
+  opacity: 0.2;
+  margin: 12px 0px;
+}
+
+.filterBox {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.dashboardKeuanganTitleCity {
+  font-size: 18px;
+  font-weight: 700;
+  color: #181818;
+  margin: 12px 0px;
+  margin-top: 16px;
+}
+
+/* responsive */
+
+@media screen and (max-width: 1024px) {
+  .carouselItem {
+    width: 100%;
+    height: 200px;
+  }
+
+  .imageCarousel {
+    width: 100%;
+    min-height: 200px;
+    object-fit: cover;
+  }
+}
+
+.tableDashboardContainer {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 100%;
+}
+
+.tableDashboardCard {
+  flex: 1;
+  background: #fff;
+  margin-top: 24px;
+  padding: 24px;
+  -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  border-radius: 2px;
+}
+
+.dashboardTableTitle {
+  font-size: 18px;
+  display: block;
+  margin: 0;
+  margin-bottom: 16px;
+  font-weight: 700;
+  line-height: 20px;
+}

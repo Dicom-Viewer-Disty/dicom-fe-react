@@ -1,0 +1,72 @@
+.wrapper {
+  width: 100%;
+  height: 60px;
+  background: #ffffff;
+  box-shadow: 0px 1px 4px rgba(74, 74, 78, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  z-index: 99;
+}
+
+.container {
+  width: 100%;
+  margin: 0px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.leftTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #181818;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconUserBox {
+  text-decoration: none;
+  color: #5c5c5c;
+}
+
+.iconUser {
+  font-size: 20px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.userName {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #181818;
+}
+
+.navbarAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: -14px;
+}
+
+@media screen and (max-width: 700px) {
+  .userName {
+    display: none;
+  }
+}

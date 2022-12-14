@@ -1,0 +1,154 @@
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleText {
+  color: #181818;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.titleDesc {
+  margin-top: 4px;
+  font-size: 16px;
+  color: #181818;
+}
+
+.addCity {
+  background: #d70137;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  padding: 10px 20px;
+}
+
+/* list city */
+.listCity {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.city {
+  display: flex;
+  gap: 36px;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.cardAddCity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.addCityIcon {
+  font-size: 24px;
+  color: #d70137;
+}
+
+.addCityText {
+  font-weight: 700;
+  color: #d70137;
+}
+
+.LocIcon {
+  font-size: 24px;
+  color: #00c247;
+}
+
+.cityText {
+  flex: 1;
+  display: flex;
+  gap: 56px;
+}
+
+.cityTextLeft,
+.cityTextRight {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cityTitleCity {
+  font-weight: 700;
+}
+
+.deleteCity {
+  background: none;
+  border: none;
+  color: #ed2121;
+}
+
+/* search input */
+.formGroup {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.inputSearch {
+  flex: 1;
+  border: 1px solid #e5e5e5;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.inputSearch:focus {
+  border-color: rgba(250, 75, 119, 0.7);
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 2px rgba(250, 75, 119, 0.2);
+  box-shadow: 0 0 0 2px rgba(250, 75, 119, 0.2);
+}
+
+.btnSearch {
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  background: #d70137;
+  border-radius: 4px;
+}
+
+.zeroResult {
+  margin-top: 8px;
+}
+
+.resultList {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result {
+  display: flex;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #dadce0;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.textResult {
+  flex: 1;
+}
+
+.btnAddCity {
+  background: transparent;
+  color: #d70137;
+  border: none;
+}

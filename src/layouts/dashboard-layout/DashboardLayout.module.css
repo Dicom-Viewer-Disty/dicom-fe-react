@@ -1,0 +1,28 @@
+.wrapper {
+  background-color: #f3f4f5;
+  min-height: 100vh;
+}
+
+.notification {
+  position: relative;
+  z-index: 999;
+}
+
+.main {
+  display: flex;
+  overflow: auto;
+}
+
+.content {
+  margin-left: 224px !important;
+  margin-top: 84px !important;
+  flex: 1;
+  margin: 24px 48px 24px 24px;
+  min-height: calc(100vh - 70px);
+}
+
+@media screen and (max-width: 1024px) {
+  .content {
+    margin-left: 100px !important;
+  }
+}

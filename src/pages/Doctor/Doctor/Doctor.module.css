@@ -1,0 +1,163 @@
+.pageTitle {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  color: #d70137;
+}
+
+.breadcumbs {
+  margin-top: 8px !important;
+}
+
+.breadActive {
+  color: #5c5c5c;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+.breadActive:hover {
+  color: #181818;
+}
+
+.breadUnactive {
+  font-weight: 700;
+  color: #181818;
+}
+
+.UserListContent {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.titleListUser {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleTextMain {
+  font-weight: 700;
+  font-size: 20px;
+  color: #181818;
+}
+
+.titleDesc {
+  margin-top: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #5c5c5c;
+}
+
+.btnAddUser {
+  background: #d70137;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  height: 40px;
+  padding: 0px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.btnAddUser:hover {
+  background: #b80041;
+  color: #fff;
+}
+
+/* content */
+.userListMain {
+  margin-top: 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: auto;
+}
+
+.tabTopContainer {
+  border-bottom: 1px solid #ced4da;
+  display: flex;
+  gap: 16px;
+  padding: 0px 16px;
+}
+
+.tabTopActive {
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  color: #d70137 !important;
+  border-bottom: 2px solid #d70137;
+  padding: 8px 0px;
+}
+
+.tabTopUnctive {
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  color: #181818 !important;
+  padding: 8px 0px;
+}
+
+.listContent {
+  margin-top: 16px;
+  padding: 0px 16px;
+  width: 60%;
+}
+
+.tabBottom {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #ced4da;
+}
+
+.tabBottomActive {
+  text-decoration: none;
+  padding: 16px 10px;
+  background: #fff;
+  color: #d70137;
+  font-weight: bold;
+  border-top: 1px solid #ced4da;
+  border-left: 1px solid #ced4da;
+  border-right: 1px solid #ced4da;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.tabBottomUnactive {
+  text-decoration: none;
+  padding: 16px 10px;
+  border-top: 1px solid #ced4da;
+  border-left: 1px solid #ced4da;
+  border-right: 1px solid #ced4da;
+  background: #f8f8f8;
+  color: #181818;
+  font-weight: bold;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.tabBottomUnactive:hover,
+.tabBottomActive:hover {
+  color: #d70137;
+}
+
+.listContentTabBottom {
+  padding: 24px 16px;
+}
+
+/* responsive */
+@media screen and (max-width: 1024px) {
+  .listContent {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .listContent {
+    width: 100%;
+  }
+}
+
+/* new */
+.tableContainerDoctor {
+  margin-top: 24px;
+}
