@@ -6,9 +6,12 @@ const DicomView = lazy(() => import("./pages/DicomView/DicomView"));
 const Doctor = lazy(() => import("./pages/Doctor/Doctor/Doctor"));
 const AddDoctor = lazy(() => import("./pages/Doctor/AddDoctor/AddDoctor"));
 const DetailDoctor = lazy(() => import("./pages/Doctor/DetailDoctor/DetailDoctor"));
+const EditDoctor = lazy(() => import("./pages/Doctor/EditDoctor/EditDoctor"));
+
 const Patient = lazy(() => import("./pages/Patient/Patient/Patient"));
 const DetailPatient = lazy(() => import("./pages/Patient/DetailPatient/Detailpatient"));
 const AddPatient = lazy(() => import("./pages/Patient/AddPatient/AddPatient"));
+const EditPatient = lazy(() => import("./pages/Patient/EditPatient/EditPatient"));
 
 const Setting = lazy(() => import("./pages/Settings/pengaturan/Setting"));
 const Profile = lazy(() => import("./pages/Profile/Profile/Profile"));
@@ -62,6 +65,13 @@ export const APP_ROUTE = [
     component: DetailPatient,
     private: true,
   },
+   {
+    name: "EditPatient",
+    path: "/pasien/edit-pasien/:id",
+    exact: true,
+    component: EditPatient,
+    private: true,
+  },
   {
     name: "Profile",
     path: "/profile",
@@ -83,12 +93,18 @@ export const APP_ROUTE = [
     component: AddPatient,
     private: true,
   },
-
   {
     name: "DetailDoctor",
     path: "/dokter/detail-dokter/:id",
     exact: true,
     component: DetailDoctor,
+    private: true,
+  },
+  {
+    name: "EditDoctor",
+    path: "/dokter/edit-dokter/:id",
+    exact: true,
+    component: EditDoctor,
     private: true,
   },
   {

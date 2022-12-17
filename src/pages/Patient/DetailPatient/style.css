@@ -1,4 +1,4 @@
-.dicom-wrapper {
+.dicom-wrapper2 {
   background-color: white;
   border: 6px;
   border-style: groove;
@@ -6,11 +6,12 @@
   max-width: 100%;
   height: 85vh;
   display: flex;
+  justify-content: space-between;
   gap: 8px;
   padding: 24px;
 }
 
-.dicom-menu {
+.dicom-menu2 {
   width: 4%;
   display: flex;
   flex-direction: column;
@@ -30,13 +31,11 @@
   background-color: #f39c12;
 }
 
-.dicom-view {
-  width: 70%;
+.dicom-view2 {
+  width: 90%;
 }
 
-.dicom-info {
-  max-width: 26%;
-}
+
 
 .dicom-table {
   max-width: 275px;
@@ -59,9 +58,9 @@
 }
 
 /*custom inpu file*/
-input[type="file"] {
+/* input[type="file"] {
   display: none;
-}
+} */
 .custom-file-upload {
   display: inline-block;
   border-radius: 4px;

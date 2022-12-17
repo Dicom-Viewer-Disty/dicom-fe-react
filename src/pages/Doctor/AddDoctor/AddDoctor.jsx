@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
 import styles from "./AddDoctor.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 //components mui
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 //framework component
 import ReactLoading from "react-loading";
+import { BASE_API_URL } from "../../../helper/url";
 import Modal from "react-bootstrap/esm/Modal";
 import axios from "axios";
 import { Input, Select, Skeleton, message, Button, Steps } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { ToastContainer, toast } from 'react-toastify';
 //image/icon
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "../../../assets/assets";
 const { Option } = Select;
@@ -18,6 +20,7 @@ const { Option } = Select;
 function AddDoctor(props) {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const history = useHistory();
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -28,6 +31,7 @@ function AddDoctor(props) {
     role: "",
     strNumber: "",
   });
+
 
   //handle change
   const handleChange = (event) => {
@@ -55,11 +59,10 @@ function AddDoctor(props) {
       confirmPassword: user.confirmPassword,
       role: 2,
     });
-    console.log(dataBody);
 
     var config = {
       method: "post",
-      url: "http://localhost:3000/api/v1/user",
+      url: `${BASE_API_URL}/user`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,7 +71,6 @@ function AddDoctor(props) {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
         // post doctor
         var dataBody2 = JSON.stringify({
           strNumber: user.strNumber,
@@ -82,7 +84,7 @@ function AddDoctor(props) {
 
         var config2 = {
           method: "post",
-          url: "http://localhost:3000/api/v1/doctor",
+          url: `${BASE_API_URL}/doctor`,
           headers: {
             "Content-Type": "application/json",
           },
@@ -91,24 +93,65 @@ function AddDoctor(props) {
 
         axios(config2)
           .then(function (response) {
-            alert("tambah dokter berhasil");
+            toast.success('Menambahkan Dokter Berhasil', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
             setLoading(false);
+            setTimeout(() => {
+              history.push("/dokter");
+            }, 1500);
           })
           .catch(function (error) {
-            console.log(error);
             setLoading(false);
-            alert("tambah dokter gagal");
+            toast.error('Menambahkan Dokter Gagal', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           });
         // end post doctor
       })
       .catch(function (error) {
-        console.log(error);
+        toast.error('Menambahkan Dokter Gagal', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setLoading(false);
       });
   };
 
   return (
     <DashboardLayout>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className={styles.wrapper}>
         <div className={styles.topWrapper}>
           <h2 className={styles.pageTitle}>Tambah Dokter</h2>
@@ -116,7 +159,7 @@ function AddDoctor(props) {
             <Link className={styles.breadActive} to="/dashboard">
               Home
             </Link>
-            <Link className={styles.breadActive} to="/pengguna">
+            <Link className={styles.breadActive} to="/dokter">
               Dokter
             </Link>
             <Typography className={styles.breadUnactive} color="text.primary">
@@ -186,37 +229,6 @@ function AddDoctor(props) {
             </div>
           </div>
 
-          {/* succes modal */}
-          {/* <Modal size="sm" show={modalSuccesShow}>
-              <div className={styles.modalSucces}>
-                <div className={styles.ModalImageSucces}>
-                  <AiOutlineCheckCircle className={styles.iconSucces} />
-                </div>
-                <div className={styles.ModalTextSucces}>
-                  <h5 className={styles.modalTitleSucces}>Pendaftaran Berhasil!</h5>
-                  <p className={styles.modaldescSucces}>Akun super admin telah berhasil dibuat</p>
-                </div>
-                <button onClick={() => window.location.reload()} className={styles.btnCloseModalSucces}>
-                  Kembali
-                </button>
-              </div>
-            </Modal> */}
-
-          {/* failed modal */}
-          {/* <Modal size="sm" show={modalFailedShow}>
-              <div className={styles.modalFailed}>
-                <div className={styles.ModalImageFailed}>
-                  <AiOutlineCloseCircle className={styles.iconFailed} />
-                </div>
-                <div className={styles.ModalTextFailed}>
-                  <h5 className={styles.modalTitleFailed}>Pendaftaran Gagal!</h5>
-                  <p className={styles.modaldescFailed}>{messageError}</p>
-                </div>
-                <button onClick={() => setModalFailedShow(false)} className={styles.btnCloseModalFailed}>
-                  Kembali
-                </button>
-              </div>
-            </Modal> */}
         </div>
       </div>
     </DashboardLayout>

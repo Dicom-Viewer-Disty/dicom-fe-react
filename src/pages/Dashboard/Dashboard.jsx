@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { BASE_API_URL } from "../../constant/url";
 import { logout } from "../../utils/auth";
 import { message, Skeleton, Tooltip, Select, Space, Table, Tag } from "antd";
-
+import { BASE_API_URL } from "../../helper/url";
 //dependency component
 import { Link } from "react-router-dom";
 //my own component
@@ -28,34 +27,32 @@ function Dashboard() {
   const [newData, setNewdata] = useState([]);
   const [dataPatient, setDataPatient] = useState([]);
   const [dataDoctor, setDataDoctor] = useState([]);
-
+  const [data, setData] = useState()
   //get all data
   useEffect(() => {
     // get patient
     var config = {
       method: "get",
-      url: "http://localhost:3000/api/v1/patient",
+      url: `${BASE_API_URL}/patient`,
     };
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
 
         setTotalPatient(response.data.length);
 
         var newDataTemp = [];
         response.data.slice(0, 5).map((item) => {
           newDataTemp = [...newDataTemp, { key: item.id, name: item.name, medicNumber: item.medicalRecordNumber, gender: item.gender, phoneNumber: item.phoneNumber, tags: ["Pasien"] }];
-          console.log(item.name);
+
         });
-        console.log(newDataTemp);
         setDataPatient(newDataTemp);
 
         // get doctor
 
         var config = {
           method: "get",
-          url: "http://localhost:3000/api/v1/doctor",
+          url: `${BASE_API_URL}/doctor`,
         };
 
         axios(config)
@@ -64,10 +61,27 @@ function Dashboard() {
             var dataDoctorTemp = [];
             response.data.slice(0, 5).map((item) => {
               dataDoctorTemp = [...dataDoctorTemp, { key: item.id, name: item.user.name, strNumber: item.strNumber, gender: item.user.gender, phoneNumber: item.user.phoneNumber, tags: ["Dokter"] }];
-              console.log(item.name);
             });
             setDataDoctor(dataDoctorTemp);
-            setLoading(false);
+            var config = {
+              method: 'get',
+              url: `${BASE_API_URL}/me`,
+            };
+
+            axios(config)
+              .then(function (response) {
+                setData(response.data)
+                setLoading(false);
+              })
+              .catch(function (error) {
+                setLoading(false);
+                if (error.response.status === 401) {
+                  logout();
+                  message.error("Sesi telah habis, silahkan login kembali");
+                  history.replace("/");
+                }
+                console.log(error);
+              });
           })
           .catch(function (error) {
             console.log(error);
@@ -76,7 +90,6 @@ function Dashboard() {
         // end doctor
       })
       .catch(function (error) {
-        console.log(error.response.status);
         if (error.response.status === 401) {
           logout();
           message.error("Sesi telah habis, silahkan login kembali");
@@ -84,6 +97,8 @@ function Dashboard() {
         }
         setLoading(false);
       });
+
+
   }, []);
 
   // table
@@ -228,7 +243,7 @@ function Dashboard() {
                   <div className={styles.cardColor}></div>
                   <div className={styles.dashboardKeuanganCardTop}>
                     <h3 className={styles.dashboardKeuanganCardTopTitle}>Total Dokter</h3>
-                    <Tooltip placement="bottom" title="Total saldo yang dimiliki oleh user bantubantuin">
+                    <Tooltip placement="bottom" title="Total dokter yang dimiliki oleh anda">
                       <AiOutlineQuestionCircle className={styles.excIcon} />
                     </Tooltip>
                   </div>
@@ -240,7 +255,7 @@ function Dashboard() {
                   <div className={styles.cardColor}></div>
                   <div className={styles.dashboardKeuanganCardTop}>
                     <h3 className={styles.dashboardKeuanganCardTopTitle}>Total Pasien</h3>
-                    <Tooltip placement="bottom" title="Total saldo yang dimiliki oleh semua partner bantubantuin">
+                    <Tooltip placement="bottom" title="Total pasien yang dimiliki oleh anda">
                       <AiOutlineQuestionCircle className={styles.excIcon} />
                     </Tooltip>
                   </div>
@@ -256,10 +271,13 @@ function Dashboard() {
             <div className={styles.dashboardCityContainer}></div>
 
             <div className={styles.tableDashboardContainer}>
-              <div className={styles.tableDashboardCard}>
-                <h3 className={styles.dashboardTableTitle}>Dokter Terbaru</h3>
-                <Table columns={columns2} dataSource={dataDoctor} />
-              </div>
+              {
+                data.role.role === "admin" &&
+                <div className={styles.tableDashboardCard}>
+                  <h3 className={styles.dashboardTableTitle}>Dokter Terbaru</h3>
+                  <Table columns={columns2} dataSource={dataDoctor} />
+                </div>
+              }
               <div className={styles.tableDashboardCard}>
                 <h3 className={styles.dashboardTableTitle}>Pasien Terbaru</h3>
                 <Table columns={columns} dataSource={dataPatient} />

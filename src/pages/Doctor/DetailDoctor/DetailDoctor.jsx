@@ -5,7 +5,7 @@ import { Link, useLocation, useHistory, useParams } from "react-router-dom";
 //my own component
 import styles from "./DetailDoctor.module.css";
 import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
-import { BASE_API_URL } from "../../../constant/url";
+import { BASE_API_URL } from "../../../helper/url";
 import { logout } from "../../../utils/auth";
 //framework component
 import ReactLoading from "react-loading";
@@ -31,14 +31,12 @@ function DetailDoctor(props) {
   useEffect(() => {
     var config = {
       method: "get",
-      url: `http://localhost:3000/api/v1/doctor/${id}`,
+      url: `${BASE_API_URL}/doctor/${id}`,
     };
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         setDetail(response.data);
-        console.log(response);
         setLoading(false);
       })
       .catch(function (error) {
@@ -51,15 +49,15 @@ function DetailDoctor(props) {
     <DashboardLayout>
       <div className={styles.wrapper}>
         <div className={styles.topWrapper}>
-          <h2 className={styles.pageTitle}>Detail Partner Bantar</h2>
+          <h2 className={styles.pageTitle}>Detail Dokter</h2>
           <Breadcrumbs aria-label="breadcrumb" className={styles.breadcumbs}>
             <Link className={styles.breadActive} underline="hover" color="inherit" to="/dashboard">
               Home
             </Link>
-            <Link className={styles.breadActive} underline="hover" color="inherit" to="/pengguna">
-              Pengguna
+            <Link className={styles.breadActive} underline="hover" color="inherit" to="/dokter">
+              Dokter
             </Link>
-            <Typography className={styles.breadUnactive}>Detail Partner Bantar</Typography>
+            <Typography className={styles.breadUnactive}>Detail Dokter</Typography>
           </Breadcrumbs>
         </div>
       </div>
@@ -100,12 +98,12 @@ function DetailDoctor(props) {
                       <p className={styles.textDetail}>: {detail.user.name}</p>
                       <p className={styles.textDetail}>: {detail.strNumber}</p>
                       <p className={styles.textDetail}>: {detail.user.gender}</p>
-                      <p className={styles.textDetail}>: {detail.birthDate}</p>
-                      <p className={styles.textDetail}>: {detail.email}</p>
-                      <p className={styles.textDetail}>: {detail.phoneNumber}</p>
-                      <p className={styles.textDetail}>: {detail.address}</p>
-                      <p className={styles.textDetail}>: {detail.practicePlace}</p>
-                      <p className={styles.textDetail}>: {detail.specialization}</p>
+                      <p className={styles.textDetail}>: {detail.birthDate === null ? "-" : detail.birthDate}</p>
+                      <p className={styles.textDetail}>: {detail.user.email}</p>
+                      <p className={styles.textDetail}>: {detail.user.phoneNumber}</p>
+                      <p className={styles.textDetail}>: {detail.address === null ? "-" : detail.address}</p>
+                      <p className={styles.textDetail}>: {detail.practicePlace === null ? "-" : detail.practicePlace}</p>
+                      <p className={styles.textDetail}>: {detail.specialization === null ? "-" : detail.specialization}</p>
                     </div>
                   </div>
                 </div>

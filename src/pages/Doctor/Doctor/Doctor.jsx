@@ -8,7 +8,9 @@ import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
 //framework component
 import { Typography, Breadcrumbs } from "@mui/material";
 import { Skeleton, Space, Table, Tag } from "antd";
-
+import { AiFillEye, AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { BASE_API_URL } from "../../../helper/url"
+import { ToastContainer, toast } from 'react-toastify';
 function Doctor() {
   const [dataDoctor, setDataDoctor] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,15 +18,14 @@ function Doctor() {
     // get doctor
     var config = {
       method: "get",
-      url: "http://localhost:3000/api/v1/doctor",
+      url: `${BASE_API_URL}/doctor`,
     };
 
     axios(config)
       .then(function (response) {
         var dataDoctorTemp = [];
         response.data.slice(0, 5).map((item) => {
-          dataDoctorTemp = [...dataDoctorTemp, { key: item.id, name: item.user.name, strNumber: item.strNumber, gender: item.user.gender, phoneNumber: item.user.phoneNumber, tags: ["Dokter"] }];
-          console.log(item.name);
+          dataDoctorTemp = [...dataDoctorTemp, { userId: item.user.id, key: item.id, name: item.user.name, strNumber: item.strNumber, gender: item.user.gender, phoneNumber: item.user.phoneNumber, tags: ["Dokter"] }];
         });
         setDataDoctor(dataDoctorTemp);
         setLoading(false);
@@ -35,6 +36,44 @@ function Doctor() {
       });
     // end doctor
   }, []);
+
+  // delete doctor
+  const deleteDoctor = (val) => {
+    var config = {
+      method: 'delete',
+      url: `${BASE_API_URL}/user/${val}`,
+    };
+
+    axios(config)
+      .then(function (response) {
+        toast.success('Menghapus Dokter Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      })
+      .catch(function (error) {
+        console.log(error);
+        toast.error('Menghapus Dokter Gagal', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      });
+  }
 
   // table init
   const columns2 = [
@@ -84,13 +123,33 @@ function Doctor() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link to={`/dokter/detail-dokter/${record.key}`}>Lihat {record.key}</Link>
+          <Link to={`/dokter/detail-dokter/${record.key}`}>
+            <AiFillEye className={styles.iconActionView} />
+          </Link>
+          <Link to={`/dokter/edit-dokter/${record.key}`}>
+            <AiFillEdit className={styles.iconActionEdit} />
+          </Link>
+          <button onClick={() => deleteDoctor(record.userId)}>
+            <AiFillDelete className={styles.iconActionDelete} />
+          </button>
         </Space>
       ),
     },
   ];
   return (
     <DashboardLayout>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {loading ? (
         <Skeleton />
       ) : (
@@ -101,7 +160,7 @@ function Doctor() {
               <Link className={styles.breadActive} underline="hover" color="inherit" to="/dashboard">
                 Home
               </Link>
-              <Typography className={styles.breadUnactive}>Pengguna</Typography>
+              <Typography className={styles.breadUnactive}>Pasien</Typography>
             </Breadcrumbs>
           </div>
           <div className={styles.UserListContent}>

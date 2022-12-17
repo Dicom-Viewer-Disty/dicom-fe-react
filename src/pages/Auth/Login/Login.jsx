@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 //dependency component
 import axios from "axios";
+import { BASE_API_URL } from "../../../helper/url";
 //my own component
 import styles from "./Login.module.css";
 import LoginNav from "../../../components/navbars/login-nav/LoginNav";
@@ -40,7 +41,7 @@ function Login(props) {
 
     let config = {
       method: "post",
-      url: "http://localhost:3000/api/v1/login",
+      url: `${BASE_API_URL}/login`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -111,11 +112,11 @@ function Login(props) {
               </label>
               <Input.Password required name="password" className={styles.input} value={user.password} onChange={handleChange} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
             </div>
-            <div className={styles.infoLogin}>
+            {/* <div className={styles.infoLogin}>
               <Link className={styles.linkForgetPw} to="/reset-password">
                 Lupa kata sandi ?
               </Link>
-            </div>
+            </div> */}
             <div className={styles.infoLogin}></div>
             {loading ? (
               <button disabled className={styles.btnLogin}>

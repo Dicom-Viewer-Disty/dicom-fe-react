@@ -104,14 +104,10 @@ function DicomView() {
     const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(e.target.files[0]);
     setState({ ...state, imageIds: [imageId] });
     setInit(false);
-    console.log(e);
-    console.log(state);
-    console.log(typeof imageId);
 
     // more info
     cornerstone.loadImage(imageId).then(
       function (image) {
-        console.log(image);
 
         // important
 
@@ -165,7 +161,6 @@ function DicomView() {
         setVal(val.push(readTagString(image, "x00080023") + " [" + formatData(readTagString(image, "x00080023")) + "]"));
         setVal(val.push(readTagString(image, "x00080030")));
         setVal(val.push(readTagString(image, "x00080031")));
-        console.log(val);
         setRows([
           { name: "(0002,0000) File Meta Information Group Length", code: val.length !== 0 ? val[0] : "-" },
           { name: "(0002,0001) File Meta Information Version", code: val.length !== 0 ? val[1] : "-" },
@@ -217,7 +212,6 @@ function DicomView() {
     });
   };
 
-  console.log(val);
 
   return (
     <DashboardLayout>
@@ -461,7 +455,7 @@ function DicomView() {
                     <label for="file-upload" className="custom-file-upload">
                       <AiOutlineUpload className="menu-card__icon" />
                     </label>
-                    <input id="file-upload" accept=".dcm" type="file" onChange={handleInput} />
+                    <input className={styles.input} id="file-upload" accept=".dcm" type="file" onChange={handleInput} />
                   </div>
                 </Tooltip>
 

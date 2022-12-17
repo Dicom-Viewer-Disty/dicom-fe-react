@@ -5,8 +5,10 @@ import { logout } from "../../../utils/auth";
 import { Link } from "react-router-dom";
 import styles from "./Patient.module.css";
 import { Input } from "antd";
+import { BASE_API_URL } from "../../../helper/url";
+import { AiFillEye, AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { message, Skeleton, Tooltip, Select, Space, Table, Tag } from "antd";
-
+import { ToastContainer, toast } from 'react-toastify';
 import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
 import { Typography, Breadcrumbs } from "@mui/material";
 
@@ -21,22 +23,18 @@ function Patient() {
     // get patient
     var config = {
       method: "get",
-      url: "http://localhost:3000/api/v1/patient",
+      url: `${BASE_API_URL}/patient`,
     };
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
         var newDataTemp = [];
         response.data.slice(0, 5).map((item) => {
           newDataTemp = [...newDataTemp, { key: item.id, name: item.name, medicNumber: item.medicalRecordNumber, gender: item.gender, phoneNumber: item.phoneNumber, tags: ["Pasien"] }];
-          console.log(item.name);
         });
-        console.log(newDataTemp);
         setDataPatient(newDataTemp);
       })
       .catch(function (error) {
-        console.log(error.response.status);
         if (error.response.status === 401) {
           logout();
           message.error("Sesi telah habis, silahkan login kembali");
@@ -45,6 +43,44 @@ function Patient() {
         setLoading(false);
       });
   }, []);
+
+
+  const deletePasien = (val) => {
+    var config = {
+      method: 'delete',
+      url: `${BASE_API_URL}/patient/${val}`,
+    };
+
+    axios(config)
+      .then(function (response) {
+        toast.success('Menghapus Pasien Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      })
+      .catch(function (error) {
+        toast.error('Menghapus Pasien Gagal', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        console.log(error);
+      });
+  }
 
   // table
   const columns = [
@@ -94,7 +130,15 @@ function Patient() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Link to={`/pasien/detail-pasien/${record.key}`}>Lihat {record.key}</Link>
+          <Link to={`/pasien/detail-pasien/${record.key}`}>
+            <AiFillEye className={styles.iconActionView} />
+          </Link>
+          <Link to={`/pasien/edit-pasien/${record.key}`}>
+            <AiFillEdit className={styles.iconActionEdit} />
+          </Link>
+          <button onClick={() => deletePasien(record.key)}>
+            <AiFillDelete className={styles.iconActionDelete} />
+          </button>
         </Space>
       ),
     },
@@ -102,6 +146,18 @@ function Patient() {
 
   return (
     <DashboardLayout>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className={styles.wrapper}>
         <div className={styles.topWrapper}>
           <h2 className={styles.pageTitle}>Pasien</h2>

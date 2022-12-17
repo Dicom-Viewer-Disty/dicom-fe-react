@@ -272,3 +272,20 @@
   background: #b80041;
   color: #fff;
 }
+
+
+
+.iconActionView {
+  font-size: 20px;
+  color: green;
+}
+
+.iconActionEdit {
+  font-size: 20px;
+  color: blue;
+}
+.iconActionDelete {
+  font-size: 20px;
+  color: #d70137;
+}
+

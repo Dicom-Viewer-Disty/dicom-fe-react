@@ -1,3 +1,4 @@
+
 .pageTitle {
     font-style: normal;
     font-weight: 800;
@@ -224,3 +225,31 @@
     }
   }
   
+.inputMenu[type="file"]{
+ display: none;
+}
+
+  .dicomInput{
+    border: none;
+    margin: 8px 0px;
+  }
+
+  .dicomFileContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .dicomFileCard{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid rgb(21, 21, 21);
+    padding: 8px;
+    border-radius: 4px;
+  }
+
+  .iconActionDelete {
+  font-size: 20px;
+  color: #d70137;
+}

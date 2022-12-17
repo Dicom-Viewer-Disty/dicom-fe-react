@@ -147,3 +147,9 @@
     width: 1000px;
   }
 }
+
+
+/*custom inpu file*/
+.input[type="file"] {
+  display: none;
+}

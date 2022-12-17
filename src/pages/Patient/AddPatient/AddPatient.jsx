@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
 import styles from "./AddPatient.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 //components mui
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -9,15 +9,18 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import ReactLoading from "react-loading";
 import Modal from "react-bootstrap/esm/Modal";
 import axios from "axios";
+import { BASE_API_URL } from "../../../helper/url";
 import { Input, Select, Skeleton, message, Button, Steps } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 //image/icon
+import { ToastContainer, toast } from 'react-toastify';
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "../../../assets/assets";
 const { Option } = Select;
 
 function TambahPasien(props) {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const history = useHistory();
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -60,23 +63,57 @@ function TambahPasien(props) {
 
     var config = {
       method: "post",
-      url: "http://localhost:3000/api/v1/patient",
+      url: `${BASE_API_URL}/patient`,
       data: dataBody,
     };
 
     axios(config)
       .then(function (response) {
+        toast.success('Menambahkan Pasien Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setLoading(false);
-        alert("nambah pasien berhasil");
+        setTimeout(() => {
+          history.push("/pasien");
+        }, 1500);
       })
       .catch(function (error) {
         console.log(error);
+        toast.error('Menambahkan Pasien Gagal', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         setLoading(false);
       });
   };
 
   return (
     <DashboardLayout>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className={styles.wrapper}>
         <div className={styles.topWrapper}>
           <h2 className={styles.pageTitle}>Tambah Pasien</h2>
@@ -84,7 +121,7 @@ function TambahPasien(props) {
             <Link className={styles.breadActive} to="/dashboard">
               Home
             </Link>
-            <Link className={styles.breadActive} to="/pengguna">
+            <Link className={styles.breadActive} to="/pasien">
               Pasien
             </Link>
             <Typography className={styles.breadUnactive} color="text.primary">

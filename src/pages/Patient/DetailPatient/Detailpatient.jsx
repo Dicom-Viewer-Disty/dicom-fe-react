@@ -3,21 +3,25 @@ import axios from "axios";
 //dependency component
 import { Link, useLocation, useHistory, useParams } from "react-router-dom";
 //my own component
+import "./style.css";
 import styles from "./DetailPatient.module.css";
 import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
-import { BASE_API_URL } from "../../../constant/url";
+import { BASE_API_URL } from "../../../helper/url";
 import { logout } from "../../../utils/auth";
+
+import { ToastContainer, toast } from 'react-toastify';
 //framework component
 
 import { Typography, Breadcrumbs } from "@mui/material";
 import { Image, Skeleton, message } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
+import { Button, Upload, Input } from 'antd';
 import { FaUserAlt } from "react-icons/fa";
 import { DefaultAvatar } from "../../../assets/assets";
 //var
 
 // dicom
 // dicom
-import "./style.css";
 import CornerstoneViewport from "react-cornerstone-viewport";
 import cornerstone from "cornerstone-core";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
@@ -44,7 +48,7 @@ import { RiRuler2Fill } from "react-icons/ri";
 import { FaRegHandRock } from "react-icons/fa";
 import { TbEraser } from "react-icons/tb";
 import { AiOutlineUpload, AiOutlineDownload } from "react-icons/ai";
-
+import { AiFillEye, AiFillDelete, AiFillEdit } from "react-icons/ai";
 function DetailPatient(props) {
   const [detail, setDetail] = useState({});
   const [dicomFile, setDicomFile] = useState([]);
@@ -112,32 +116,27 @@ function DetailPatient(props) {
     frameRate: 22,
   });
 
-  console.log(id);
 
   useEffect(() => {
     var config = {
       method: "get",
-      url: `http://localhost:3000/api/v1/patient/${id}`,
+      url: `${BASE_API_URL}/patient/${id}`,
     };
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
         setDetail(response.data);
         let tempDicoms = [];
         response.data.dicoms.forEach((element) => {
-          console.log(element.dicomFile);
+
           tempDicoms = [...tempDicoms, `dicomweb://localhost:3000${element.dicomFile}`];
         });
-        console.log(tempDicoms);
         setStack1(tempDicoms);
-        console.log(stack1);
-        console.log(state);
+
         setState({
           ...state,
           imageIds: tempDicoms,
         });
-        console.log(state);
         setLoading(false);
       })
       .catch(function (error) {
@@ -147,24 +146,43 @@ function DetailPatient(props) {
   }, []);
 
   const handleUploadDicom = (e) => {
-    console.log(e.target.files[0]);
     var dataBody = new FormData();
     dataBody.append("dicomFile", e.target.files[0]);
     dataBody.append("patienId", id);
 
     var config = {
       method: "post",
-      url: "http://localhost:3000/api/v1/dicom",
+      url: `${BASE_API_URL}/dicom`,
       data: dataBody,
     };
 
     axios(config)
       .then(function (response) {
-        alert("upload file dicom berhasil");
+        toast.success('Upload File Dicom Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       })
       .catch(function (error) {
-        console.log(error);
-        alert("upload file dicom gagal");
+        toast.error('Upload File dicom Gagal', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       });
   };
 
@@ -173,14 +191,10 @@ function DetailPatient(props) {
     const imageId = cornerstoneWADOImageLoader.wadouri.fileManager.add(e.target.files[0]);
     setState({ ...state, imageIds: [imageId] });
     setInit(false);
-    console.log(e);
-    console.log(state);
-    console.log(typeof imageId);
 
     // more info
     cornerstone.loadImage(imageId).then(
       function (image) {
-        console.log(image);
 
         // important
 
@@ -234,7 +248,7 @@ function DetailPatient(props) {
         setVal(val.push(readTagString(image, "x00080023") + " [" + formatData(readTagString(image, "x00080023")) + "]"));
         setVal(val.push(readTagString(image, "x00080030")));
         setVal(val.push(readTagString(image, "x00080031")));
-        console.log(val);
+
         setRows([
           { name: "(0002,0000) File Meta Information Group Length", code: val.length !== 0 ? val[0] : "-" },
           { name: "(0002,0001) File Meta Information Version", code: val.length !== 0 ? val[1] : "-" },
@@ -286,10 +300,59 @@ function DetailPatient(props) {
     });
   };
 
-  console.log(val);
+
+  const deleteDicom = (val) => {
+    var config = {
+      method: 'delete',
+      url: `${BASE_API_URL}/dicom/${val}`,
+
+    };
+
+    axios(config)
+      .then(function (response) {
+        toast.success('Menghapus File Dicom Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      })
+      .catch(function (error) {
+        toast.error('Menghapus File dicom Gagal', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        console.log(error);
+      });
+  }
 
   return (
     <DashboardLayout>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className={styles.wrapper}>
         <div className={styles.topWrapper}>
           <h2 className={styles.pageTitle}>Detail Pasien</h2>
@@ -297,7 +360,7 @@ function DetailPatient(props) {
             <Link className={styles.breadActive} underline="hover" color="inherit" to="/dashboard">
               Home
             </Link>
-            <Link className={styles.breadActive} underline="hover" color="inherit" to="/list-user">
+            <Link className={styles.breadActive} underline="hover" color="inherit" to="/pasien">
               Pasien
             </Link>
             <Typography className={styles.breadUnactive}>Detail Pasien</Typography>
@@ -336,13 +399,13 @@ function DetailPatient(props) {
                       <p className={styles.titleDetail}>Catatan</p>
                     </div>
                     <div className={styles.mainRightData}>
-                      <p className={styles.textDetail}>: {detail.gender}</p>
-                      <p className={styles.textDetail}>: {detail.birthDate.slice(0, 10)}</p>
-                      <p className={styles.textDetail}>: {detail.address}</p>
-                      <p className={styles.textDetail}>: {detail.email}</p>
-                      <p className={styles.textDetail}>: {detail.phoneNumber}</p>
-                      <p className={styles.textDetail}>: {detail.disease}</p>
-                      <p className={styles.textDetail}>: {detail.note}</p>
+                      <p className={styles.textDetail}>: {detail.gender === null ? "-" : detail.gender}</p>
+                      <p className={styles.textDetail}>: {detail.birthDate === null ? "-" : detail.birthDate.slice(0, 10)}</p>
+                      <p className={styles.textDetail}>: {detail.address === null ? "-" : detail.address}</p>
+                      <p className={styles.textDetail}>: {detail.email === null ? "-" : detail.email}</p>
+                      <p className={styles.textDetail}>: {detail.phoneNumber === null ? "-" : detail.phoneNumber}</p>
+                      <p className={styles.textDetail}>: {detail.disease === null ? "-" : detail.disease}</p>
+                      <p className={styles.textDetail}>: {detail.note === null ? "-" : detail.note}</p>
                     </div>
                   </div>
                 </div>
@@ -352,15 +415,262 @@ function DetailPatient(props) {
                     <h4 className={styles.mainTitleText}>File Dicom</h4>
                   </div>
                   <div className={styles.mainDetailDataDicom}>
-                    <input type="file" name="" id="" accept=".dcm" onChange={handleUploadDicom} />
-                    <div>
+
+                    <Input className={styles.dicomInput} type="file" name="" id="" accept=".dcm" onChange={handleUploadDicom} />
+
+                    <div className={styles.dicomFileContainer}>
                       {detail.dicoms.map((item) => {
                         return (
-                          <div>
+                          <div className={styles.dicomFileCard}>
                             <p>{item.dicomFile.slice(8)}</p>
+                            <button onClick={() => deleteDicom(item.id)}>
+                              <AiFillDelete className={styles.iconActionDelete} />
+                            </button>
                           </div>
                         );
                       })}
+
+                    </div>
+                  </div>
+                  <div className="dicom-wrapper2">
+                    {/* OPTION FORM */}
+                    <div className="dicom-menu2">
+                      {typeColor === "wwwc" ? (
+                        <Tooltip title="Wwwc" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Wwwc" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <HiColorSwatch className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Wwwc" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Wwwc" });
+                              setTypeColor("wwwc");
+                            }}
+                            className="menu-card"
+                          >
+                            <HiColorSwatch className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "zoom" ? (
+                        <Tooltip title="Zoom" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Normal" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <TbZoomPan className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Zoom" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Zoom" });
+                              setTypeColor("zoom");
+                            }}
+                            className="menu-card"
+                          >
+                            <TbZoomPan className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "pan" ? (
+                        <Tooltip title="Pan" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Pan" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <MdOutlinePanTool className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Pan" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Pan" });
+                              setTypeColor("pan");
+                            }}
+                            className="menu-card"
+                          >
+                            <MdOutlinePanTool className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "length" ? (
+                        <Tooltip title="Length" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Normal" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <TfiRuler className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Length" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Length" });
+                              setTypeColor("length");
+                            }}
+                            className="menu-card"
+                          >
+                            <TfiRuler className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "angle" ? (
+                        <Tooltip title="Angle" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Normal" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <TfiRulerAlt2 className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Angle" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Angle" });
+                              setTypeColor("angle");
+                            }}
+                            className="menu-card"
+                          >
+                            <TfiRulerAlt2 className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "bidirectional" ? (
+                        <Tooltip title="Bidirectional" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Normal" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <RiRuler2Fill className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Bidirectional" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Bidirectional" });
+                              setTypeColor("bidirectional");
+                            }}
+                            className="menu-card"
+                          >
+                            <RiRuler2Fill className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "freehand" ? (
+                        <Tooltip title="Freehand" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setState({ ...state, activeTool: "Normal" });
+                              setTypeColor("");
+                            }}
+                            className="menu-card"
+                          >
+                            <FaRegHandRock className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Freehand" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setState({ ...state, activeTool: "FreehandRoi" });
+                              setTypeColor("freehand");
+                            }}
+                            className="menu-card"
+                          >
+                            <FaRegHandRock className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      {typeColor === "eraser" ? (
+                        <Tooltip title="Eraser" placement="right-start">
+                          <button
+                            style={{ backgroundColor: "#7e3af2" }}
+                            onClick={() => {
+                              setTypeColor("");
+                              setState({ ...state, activeTool: "Normal" });
+                            }}
+                            className="menu-card"
+                          >
+                            <TbEraser className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Eraser" placement="right-start">
+                          <button
+                            onClick={() => {
+                              setTypeColor("eraser");
+                              setState({ ...state, activeTool: "Eraser" });
+                            }}
+                            className="menu-card"
+                          >
+                            <TbEraser className="menu-card__icon" />
+                          </button>
+                        </Tooltip>
+                      )}
+
+                      <Tooltip title="Upload File" placement="right-start">
+                        <div>
+                          <label for="file-upload" className="custom-file-upload">
+                            <AiOutlineUpload className="menu-card__icon" />
+                          </label>
+                          <input className={styles.inputMenu} id="file-upload" accept=".dcm" type="file" onChange={handleInput} />
+                        </div>
+                      </Tooltip>
+
+                      <Tooltip title="Download PDF" placement="right-start">
+                        <button onClick={exportDicom} className="menu-card">
+                          <AiOutlineDownload className="menu-card__icon" />
+                        </button>
+                      </Tooltip>
+
+                      {/* <input type="file" onChange={handleInput} name="" id="" class="custom-file-input" /> */}
+                    </div>
+
+                    <div className="dicom-view2" ref={inputRef}>
+                      <CornerstoneViewport key={Math.random} tools={state.tools} imageIds={state.imageIds} imageIdIndex={state.imageIdIndex} isPlaying={state.isPlaying} frameRate={state.frameRate} activeTool={state.activeTool} />
                     </div>
                   </div>
                 </div>
@@ -368,281 +678,6 @@ function DetailPatient(props) {
             </div>
           </div>
           {/* dicom */}
-          <div className="dicom-wrapper">
-            {/* OPTION FORM */}
-            <div className="dicom-menu">
-              {typeColor === "wwwc" ? (
-                <Tooltip title="Wwwc" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Wwwc" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <HiColorSwatch className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Wwwc" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Wwwc" });
-                      setTypeColor("wwwc");
-                    }}
-                    className="menu-card"
-                  >
-                    <HiColorSwatch className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "zoom" ? (
-                <Tooltip title="Zoom" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Normal" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <TbZoomPan className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Zoom" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Zoom" });
-                      setTypeColor("zoom");
-                    }}
-                    className="menu-card"
-                  >
-                    <TbZoomPan className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "pan" ? (
-                <Tooltip title="Pan" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Pan" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <MdOutlinePanTool className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Pan" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Pan" });
-                      setTypeColor("pan");
-                    }}
-                    className="menu-card"
-                  >
-                    <MdOutlinePanTool className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "length" ? (
-                <Tooltip title="Length" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Normal" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <TfiRuler className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Length" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Length" });
-                      setTypeColor("length");
-                    }}
-                    className="menu-card"
-                  >
-                    <TfiRuler className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "angle" ? (
-                <Tooltip title="Angle" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Normal" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <TfiRulerAlt2 className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Angle" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Angle" });
-                      setTypeColor("angle");
-                    }}
-                    className="menu-card"
-                  >
-                    <TfiRulerAlt2 className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "bidirectional" ? (
-                <Tooltip title="Bidirectional" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Normal" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <RiRuler2Fill className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Bidirectional" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Bidirectional" });
-                      setTypeColor("bidirectional");
-                    }}
-                    className="menu-card"
-                  >
-                    <RiRuler2Fill className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "freehand" ? (
-                <Tooltip title="Freehand" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setState({ ...state, activeTool: "Normal" });
-                      setTypeColor("");
-                    }}
-                    className="menu-card"
-                  >
-                    <FaRegHandRock className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Freehand" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setState({ ...state, activeTool: "FreehandRoi" });
-                      setTypeColor("freehand");
-                    }}
-                    className="menu-card"
-                  >
-                    <FaRegHandRock className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              {typeColor === "eraser" ? (
-                <Tooltip title="Eraser" placement="right-start">
-                  <button
-                    style={{ backgroundColor: "#7e3af2" }}
-                    onClick={() => {
-                      setTypeColor("");
-                      setState({ ...state, activeTool: "Normal" });
-                    }}
-                    className="menu-card"
-                  >
-                    <TbEraser className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              ) : (
-                <Tooltip title="Eraser" placement="right-start">
-                  <button
-                    onClick={() => {
-                      setTypeColor("eraser");
-                      setState({ ...state, activeTool: "Eraser" });
-                    }}
-                    className="menu-card"
-                  >
-                    <TbEraser className="menu-card__icon" />
-                  </button>
-                </Tooltip>
-              )}
-
-              <Tooltip title="Upload File" placement="right-start">
-                <div>
-                  <label for="file-upload" className="custom-file-upload">
-                    <AiOutlineUpload className="menu-card__icon" />
-                  </label>
-                  <input id="file-upload" accept=".dcm" type="file" onChange={handleInput} />
-                </div>
-              </Tooltip>
-
-              <Tooltip title="Download PDF" placement="right-start">
-                <button onClick={exportDicom} className="menu-card">
-                  <AiOutlineDownload className="menu-card__icon" />
-                </button>
-              </Tooltip>
-
-              {/* <input type="file" onChange={handleInput} name="" id="" class="custom-file-input" /> */}
-            </div>
-
-            <div className="dicom-view" ref={inputRef}>
-              <CornerstoneViewport key={Math.random} tools={state.tools} imageIds={state.imageIds} imageIdIndex={state.imageIdIndex} isPlaying={state.isPlaying} frameRate={state.frameRate} activeTool={state.activeTool} />
-            </div>
-
-            {/* <div className="dicom-info">
-              <Paper className="dicom-table">
-                <TableContainer sx={{ maxHeight: "76vh", maxWidth: "100%" }}>
-                  <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                      <TableRow>
-                        {columns.map((column) => (
-                          <TableCell key={Math.random()} align={column.align} style={{ minWidth: column.minWidth }}>
-                            {column.label}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => {
-                        return (
-                          <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                            {columns.map((column) => {
-                              const value = row[column.id];
-                              return (
-                                <TableCell key={column.id} align={column.align} style={{ fontSize: "12px" }}>
-                                  {column.format && typeof value === "number" ? column.format(value) : value}
-                                </TableCell>
-                              );
-                            })}
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Paper>
-            </div> */}
-          </div>
         </div>
       )}
     </DashboardLayout>

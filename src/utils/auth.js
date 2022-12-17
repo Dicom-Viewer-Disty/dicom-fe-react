@@ -5,6 +5,7 @@ export const login = (user) => {
 
 export const logout = () => {
   localStorage.removeItem("USER");
+    localStorage.removeItem("user");
   // localStorage.removeItem("WA");
   localStorage.removeItem("TOKEN");
   localStorage.removeItem("user-detail");
