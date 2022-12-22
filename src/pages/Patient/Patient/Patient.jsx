@@ -14,6 +14,8 @@ import { Typography, Breadcrumbs } from "@mui/material";
 
 function Patient() {
   //state
+  const [dataForSearch, setDataForSearch] = useState();
+  const [inputSearch, setInputSearch] = useState("");
   const history = useHistory();
   const [dataPatient, setDataPatient] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -29,10 +31,11 @@ function Patient() {
     axios(config)
       .then(function (response) {
         var newDataTemp = [];
-        response.data.slice(0, 5).map((item) => {
+        response.data.map((item) => {
           newDataTemp = [...newDataTemp, { key: item.id, name: item.name, medicNumber: item.medicalRecordNumber, gender: item.gender, phoneNumber: item.phoneNumber, tags: ["Pasien"] }];
         });
-        setDataPatient(newDataTemp);
+        setDataPatient(newDataTemp.reverse());
+        setDataForSearch(newDataTemp.reverse())
       })
       .catch(function (error) {
         if (error.response.status === 401) {
@@ -144,6 +147,22 @@ function Patient() {
     },
   ];
 
+  const handleInput = (e) => {
+    setInputSearch(e.target.value);
+    var dataSearch = dataForSearch.filter((item) => {
+      return (
+        item
+          .name
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase())
+      )
+    });
+    setDataPatient(dataSearch)
+    if (e.target.value === "") {
+      setDataPatient(dataForSearch)
+    }
+  }
+
   return (
     <DashboardLayout>
       <ToastContainer
@@ -177,6 +196,18 @@ function Patient() {
             <Link to="/pasien/tambah-pasien" className={styles.btnAddUser}>
               Tambah Pasien
             </Link>
+          </div>
+        </div>
+        <div className={styles.statistikContainer}>
+          <div className={styles.topInfo}>
+            <div className={styles.filterBox}>
+              <div className={styles.searchContainer}>
+                <Input placeholder="cari berdasar nama" onChange={handleInput} style={{ width: 400 }} />
+                <button className={styles.searchBtn} onClick={handleInput} >
+                  Cari
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.UserListContent}>

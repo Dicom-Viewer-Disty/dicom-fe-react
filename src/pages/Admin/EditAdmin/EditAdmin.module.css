@@ -64,6 +64,14 @@
   border-radius: 8px;
 }
 
+.fotoDetailInfo {
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
 .imageItemProfile {
   width: 150px;
   min-height: 150px;
@@ -77,7 +85,6 @@
 
 .city {
   font-size: 16px;
-  margin-top: 16px;
 }
 
 /* main detail */
@@ -111,15 +118,8 @@
 
 .mainDetailData {
   display: flex;
+  flex-direction: column;
   margin-top: 16px;
-}
-
-.fotoDetailInfo {
-  text-align: center;
-  margin-top: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.85);
 }
 
 .mainLeftData {
@@ -148,7 +148,7 @@
   background-color: #fff;
   padding: 16px;
   border-radius: 8px;
-  height: 150px;
+  height: 275px;
 }
 
 .statusReject {
@@ -159,7 +159,7 @@
   height: 400px;
 }
 
-.titleTimeline {
+.Timeline {
   font-size: 16px;
   color: #181818;
 }
@@ -224,31 +224,20 @@
   }
 }
 
-.inputMenu[type="file"] {
-  display: none;
-}
-
-.dicomInput {
-  border: none;
-  margin: 8px 0px;
-}
-
-.dicomFileContainer {
+/* new */
+.formField {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
 }
 
-.dicomFileCard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid rgb(21, 21, 21);
-  padding: 8px;
+.btnSave {
+  background-color: #d70137;
+  margin-top: 24px;
+  color: #fff;
   border-radius: 4px;
-}
-
-.iconActionDelete {
-  font-size: 20px;
-  color: #d70137;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 4px 36px;
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 //dependency component
 import { Link, useLocation, useHistory, useParams } from "react-router-dom";
 //my own component
-import styles from "./EditPatient.module.css";
+import styles from "./EditAdmin.module.css";
 import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
 import { BASE_API_URL } from "../../../helper/url";
 import { logout } from "../../../utils/auth";
@@ -14,12 +14,12 @@ import ReactLoading from "react-loading";
 import { Typography, Breadcrumbs } from "@mui/material";
 import { Select, Image, Timeline, Input, Tooltip, Skeleton, message } from "antd";
 import { FaUserAlt, FaImage } from "react-icons/fa";
-import { RiEBikeFill, RiBankCard2Fill } from "react-icons/ri";
+import { RiEBikeFill, RiBankCard2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { DefaultAvatar } from "../../../assets/assets";
 //var
 const { TextArea } = Input;
 const { Option } = Select;
-function EditPatient(props) {
+function EditAdmin(props) {
     const [status, setStatus] = useState("");
     const [detail, setDetail] = useState({});
     const [loading, setLoading] = useState(true);
@@ -28,7 +28,10 @@ function EditPatient(props) {
     const [note, setNote] = useState("");
     const location = useLocation();
     const history = useHistory;
-    const [profileImage, setProfileImage] = useState(null);
+    const [password, setPassword] = useState({
+        current_password: "",
+        new_password: "",
+    });
     const { id } = useParams();
 
     const [user, setUser] = useState({
@@ -37,12 +40,7 @@ function EditPatient(props) {
         email: "",
         phoneNumber: "",
         gender: "",
-        birthDate: "",
-        profileImage: "",
-        note: "",
-        medicalRecordNumber: "",
-        disease: "",
-        address: "",
+        profileImage: null,
     });
     const [doctor, setDoctor] = useState({
         strNumber: "",
@@ -52,18 +50,14 @@ function EditPatient(props) {
         birthDate: "",
     })
 
-    const [patient, setPatient] = useState({
-        id: "",
-        name: "",
-        email: "",
-        phoneNumber: "",
-        gender: "",
-    });
-
     //handle change
     const handleChange = (event) => {
         setUser({
             ...user,
+            [event.target.name]: event.target.value,
+        });
+        setDoctor({
+            ...doctor,
             [event.target.name]: event.target.value,
         });
     };
@@ -79,7 +73,7 @@ function EditPatient(props) {
     useEffect(() => {
         var config = {
             method: "get",
-            url: `${BASE_API_URL}/patient/${id}`,
+            url: `${BASE_API_URL}/user/${id}`,
         };
 
         axios(config)
@@ -91,20 +85,7 @@ function EditPatient(props) {
                     name: response.data.name,
                     email: response.data.email,
                     phoneNumber: response.data.phoneNumber,
-                    gender: response.data.gender,
-                    birthDate: response.data.birthDate,
-                    profileImage: response.data.profileImage,
-                    note: response.data.note,
-                    medicalRecordNumber: response.data.medicalRecordNumber,
-                    disease: response.data.disease,
-                    address: response.data.address
-                });
-                setDoctor({
-                    strNumber: response.data.strNumber,
-                    address: response.data.address,
-                    practicePlace: response.data.practicePlace,
-                    specialization: response.data.specialization,
-                    birthDate: response.data.birthDate,
+                    gender: response.data.gender
                 });
                 setLoading(false);
             })
@@ -114,37 +95,28 @@ function EditPatient(props) {
             });
     }, []);
 
-    const handleChangeImage = (event) => {
-        setProfileImage(event.target.files[0]);
-
-    }
-
 
     const updateUser = () => {
-        var dataBody = new FormData();
-        dataBody.append('name', user.name);
-        dataBody.append('profileImage', user.profileImage);
-        dataBody.append('medicalRecordNumber', user.medicalRecordNumber);
-        dataBody.append('birthDate', user.birthDate);
-        dataBody.append('gender', user.gender);
-        dataBody.append('phoneNumber', user.phoneNumber);
-        dataBody.append('email', user.email);
-        dataBody.append('address', user.address);
-        dataBody.append('disease', user.disease);
-        dataBody.append('note', user.note);
-        if (profileImage !== null) {
-            dataBody.append('profileImage', profileImage);
-        }
+        var dataUser = new FormData();
+        dataUser.append('name', user.name);
+        dataUser.append('email', user.email);
+        dataUser.append('gender', user.gender);
+        dataUser.append('profileImage', user.profileImage);
+        dataUser.append('phoneNumber', user.phoneNumber);
+
         var config = {
             method: 'patch',
-            url: `${BASE_API_URL}/patient/${id}`,
-            "content-type": "multipart/form-data",
-            data: dataBody
+            url: `${BASE_API_URL}/user/${detail.id}`,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            data: dataUser
         };
+
 
         axios(config)
             .then(function (response) {
-                toast.success('Mengedit Pasien Berhasil', {
+                toast.success('Mengedit Admin Berhasil', {
                     position: "top-center",
                     autoClose: 1500,
                     hideProgressBar: false,
@@ -160,7 +132,7 @@ function EditPatient(props) {
             })
             .catch(function (error) {
                 console.log(error);
-                toast.error('Edit Pasien Gagal', {
+                toast.error('Edit Admin Gagal', {
                     position: "top-center",
                     autoClose: 1500,
                     hideProgressBar: false,
@@ -170,6 +142,70 @@ function EditPatient(props) {
                     progress: undefined,
                     theme: "light",
                 });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            });
+    }
+
+    const handleChangePassword = (event) => {
+        setPassword({
+            ...password,
+            [event.target.name]: event.target.value,
+        });
+        // if (event.target.value !== "") {
+        //     setEditable(true);
+        // } else {
+        //     setEditable(false);
+        // }
+    };
+
+    const updatePassword = () => {
+        setLoadingConfirm(true)
+        var dataBody = JSON.stringify({
+            "password": password.current_password,
+            "confirmPassword": password.new_password
+        });
+
+        var config = {
+            method: 'patch',
+            url: `${BASE_API_URL}/password/${detail.id}`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: dataBody
+        };
+
+        axios(config)
+            .then(function (response) {
+                toast.success('Ubah Kata Sandi Berhasil', {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+                setLoadingConfirm(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                toast.error('Konfirmasi Password Tidak Cocok', {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setLoadingConfirm(false);
             });
     }
 
@@ -189,15 +225,15 @@ function EditPatient(props) {
             />
             <div className={styles.wrapper}>
                 <div className={styles.topWrapper}>
-                    <h2 className={styles.pageTitle}>Edit Pasien</h2>
+                    <h2 className={styles.pageTitle}>Detail Admin</h2>
                     <Breadcrumbs aria-label="breadcrumb" className={styles.breadcumbs}>
                         <Link className={styles.breadActive} underline="hover" color="inherit" to="/dashboard">
                             Home
                         </Link>
-                        <Link className={styles.breadActive} underline="hover" color="inherit" to="/pasien">
-                            Pasien
+                        <Link className={styles.breadActive} underline="hover" color="inherit" to="/admin">
+                            Admin
                         </Link>
-                        <Typography className={styles.breadUnactive}>Edit Pasien</Typography>
+                        <Typography className={styles.breadUnactive}>Edit Admin</Typography>
                     </Breadcrumbs>
                 </div>
             </div>
@@ -209,44 +245,24 @@ function EditPatient(props) {
                         <div className={styles.leftContainer}>
                             <div className={styles.profile}>
                                 <div className={styles.imageBoxProfile}>
-                                    <Image src={`http://localhost:3000/${user.profileImage}`} className={styles.imageItemProfile} />
+                                    <Image src={DefaultAvatar} className={styles.imageItemProfile} />
                                 </div>
                                 <div className={styles.topProfileText}>
                                     <h5 className={styles.name}>{detail.name}</h5>
-                                    <p className={styles.type}>Pasien</p>
+                                    <p className={styles.type}>Admin</p>
                                 </div>
                             </div>
                             <div className={styles.mainDetail}>
                                 <div className={styles.mainUserDetail}>
                                     <div className={styles.mainTitle}>
                                         <FaUserAlt className={styles.mainTitleIcon} />
-                                        <h4 className={styles.mainTitleText}>Data Diri Pasien</h4>
+                                        <h4 className={styles.mainTitleText}>Data Diri Admin</h4>
                                     </div>
                                     <div className={styles.mainDetailData}>
                                         <div className={styles.mainLeftData}>
                                             <div className={styles.formField}>
-                                                <p className={styles.titleDetail}>Foto Profile</p>
-                                                <div className={styles.imageUpdate}>
-                                                    {
-                                                        profileImage !== null ?
-                                                            <div className={styles.imageBox}>
-                                                                {
-                                                                    profileImage !== null && <Image src={URL.createObjectURL(profileImage)} alt="" className={styles.profileImagePic} />
-                                                                }
-                                                            </div> : <div className={styles.imageBox}>
-                                                                <Image src={`http://localhost:3000/${user.profileImage}`} alt="" className={styles.profileImagePic} />
-                                                            </div>
-                                                    }
-                                                    <input type="file" className={styles.imgUpdate} onChange={handleChangeImage} />
-                                                </div>
-                                            </div>
-                                            <div className={styles.formField}>
                                                 <p className={styles.titleDetail}>Nama</p>
                                                 <Input value={user.name} name="name" onChange={handleChange} />
-                                            </div>
-                                            <div className={styles.formField}>
-                                                <p className={styles.titleDetail}>No Medis</p>
-                                                <Input type="number" value={user.medicalRecordNumber} name="medicalRecordNumber" onChange={handleChange} />
                                             </div>
                                             <div className={styles.formField}>
                                                 <p className={styles.titleDetail}>Jenis Kelamin</p>
@@ -257,10 +273,6 @@ function EditPatient(props) {
                                                 </Select>
                                             </div>
                                             <div className={styles.formField}>
-                                                <p className={styles.titleDetail}>Tanggal Lahir</p>
-                                                <Input type="date" value={user.birthDate} name="birthDate" onChange={handleChange} />
-                                            </div>
-                                            <div className={styles.formField}>
                                                 <p className={styles.titleDetail}>Email</p>
                                                 <Input type="email" value={user.email} name="email" onChange={handleChange} />
                                             </div>
@@ -268,21 +280,29 @@ function EditPatient(props) {
                                                 <p className={styles.titleDetail}>No Whatsapp</p>
                                                 <Input addonBefore="+62" type="number" value={user.phoneNumber} name="phoneNumber" onChange={handleChange} />
                                             </div>
-                                            <div className={styles.formField}>
-                                                <p className={styles.titleDetail}>Alamat</p>
-                                                <Input value={user.address} name="address" onChange={handleChange} />
-                                            </div>
-                                            <div className={styles.formField}>
-                                                <p className={styles.titleDetail}>Penyakit</p>
-                                                <Input value={user.disease} name="disease" onChange={handleChange} />
-                                            </div>
-                                            <div className={styles.formField}>
-                                                <p className={styles.titleDetail}>Catatan</p>
-                                                <Input value={user.note} name="note" onChange={handleChange} />
-                                            </div>
                                         </div>
                                     </div>
                                     <button onClick={updateUser} className={styles.btnSave}>Simpan</button>
+                                </div>
+
+                                <div className={styles.mainUserDetail}>
+                                    <div className={styles.mainTitle}>
+                                        <RiLockPasswordFill className={styles.mainTitleIcon} />
+                                        <h4 className={styles.mainTitleText}>Ubah Kata Sandi</h4>
+                                    </div>
+                                    <div className={styles.mainDetailData}>
+                                        <div className={styles.mainLeftData}>
+                                            <div className={styles.detailGroup}>
+                                                <p className={styles.detailTitle}>Kata Sandi Baru</p>
+                                                <Input.Password required onChange={handleChangePassword} name="current_password" value={password.current_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
+                                            </div>
+                                            <div className={styles.detailGroup}>
+                                                <p className={styles.detailTitle}>Konfirmasi Kata Sandi</p>
+                                                <Input.Password required onChange={handleChangePassword} name="new_password" value={password.new_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button onClick={updatePassword} className={styles.btnSave}>Ubah</button>
                                 </div>
                             </div>
                         </div>
@@ -294,4 +314,4 @@ function EditPatient(props) {
     );
 }
 
-export default EditPatient;
+export default EditAdmin;

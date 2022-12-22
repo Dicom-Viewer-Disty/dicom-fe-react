@@ -154,7 +154,7 @@ function TambahPasien(props) {
               <label htmlFor="whatsapp" className={styles.formLabel}>
                 No Whatsapp
               </label>
-              <Input required type="number" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className={styles.formControl} />
+              <Input addonBefore="+62" required type="number" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className={styles.formControl} />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="gender" className={styles.formLabel}>

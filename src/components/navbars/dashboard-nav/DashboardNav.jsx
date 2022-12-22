@@ -66,7 +66,8 @@ function DashboardNav() {
                 </Tooltip>
               </Link> */}
               <div className={styles.user}>
-                <FaUserCircle className={styles.navbarAvatar} />
+                {/* <FaUserCircle className={styles.navbarAvatar} /> */}
+                <img className={styles.navbarAvatar} src={`http://localhost:3000/${data.profileImage}`} />
                 <NavDropdown className={styles.dropdownContainer} title={<span className={styles.userName}>{data.name}</span>}>
                   <NavDropdown.Item href="/profile">Lihat akun</NavDropdown.Item>
                   <NavDropdown.Divider />

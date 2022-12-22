@@ -33,10 +33,10 @@ function Profile(props) {
               <p className={styles.menuText}>Akun Saya</p>
             </Link>
             {/* Reset password */}
-            {/* <Link to={{ pathname: "/profile", search: "?type=reset-password" }} className={styles.menuItem}>
+            <Link to={{ pathname: "/profile", search: "?type=reset-password" }} className={styles.menuItem}>
               <RiLockPasswordFill className={styles.menuIcon} />
               <p className={styles.menuText}>Ubah Password</p>
-            </Link> */}
+            </Link>
             {/* <Link to="/profile" className={styles.menuItem}>
               <p className={styles.menuText}>ubah Profil</p>
             </Link>

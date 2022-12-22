@@ -112,11 +112,11 @@ function Login(props) {
               </label>
               <Input.Password required name="password" className={styles.input} value={user.password} onChange={handleChange} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
             </div>
-            {/* <div className={styles.infoLogin}>
-              <Link className={styles.linkForgetPw} to="/reset-password">
+            <div className={styles.infoLogin}>
+              <a target="_blank" href="https://api.whatsapp.com/send?phone=6287861130080&text=Saya%20lupa%20kata%20sandi%20saya." className={styles.linkForgetPw}>
                 Lupa kata sandi ?
-              </Link>
-            </div> */}
+              </a>
+            </div>
             <div className={styles.infoLogin}></div>
             {loading ? (
               <button disabled className={styles.btnLogin}>

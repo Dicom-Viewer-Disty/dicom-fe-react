@@ -100,7 +100,7 @@ function DetailDoctor(props) {
                       <p className={styles.textDetail}>: {detail.user.gender}</p>
                       <p className={styles.textDetail}>: {detail.birthDate === null ? "-" : detail.birthDate}</p>
                       <p className={styles.textDetail}>: {detail.user.email}</p>
-                      <p className={styles.textDetail}>: {detail.user.phoneNumber}</p>
+                      <p className={styles.textDetail}>: 0{detail.user.phoneNumber}</p>
                       <p className={styles.textDetail}>: {detail.address === null ? "-" : detail.address}</p>
                       <p className={styles.textDetail}>: {detail.practicePlace === null ? "-" : detail.practicePlace}</p>
                       <p className={styles.textDetail}>: {detail.specialization === null ? "-" : detail.specialization}</p>
@@ -171,6 +171,13 @@ function DetailDoctor(props) {
                     </div>
                   </div> */}
                 {/* </div> */}
+              </div>
+            </div>
+            <div className={styles.status}>
+              <div>
+                <div className={styles.statusTitle}>Status Dokter</div>
+                <p className={styles.textTimeline}>Dibuat pada : {detail.createdAt.slice(0, 10)}</p>
+                <p className={styles.textTimeline}>Terakhir update pada : {detail.updatedAt.slice(0, 10)}</p>
               </div>
             </div>
           </div>

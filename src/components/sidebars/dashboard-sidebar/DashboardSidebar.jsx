@@ -6,6 +6,7 @@ import { logout } from "../../../utils/auth";
 import { BASE_API_URL } from "../../../helper/url";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./DashboardSidebar.module.css";
+import { MdDocumentScanner } from "react-icons/md";
 import {
   DashboardDark,
   DashboardColor,
@@ -108,6 +109,34 @@ function DashboardSidebar() {
                 <img src={UserDark1} alt="icon sidebar" className={styles.iconSidebar} />
                 <h5 className={styles.text}>Pasien</h5>
               </Link>
+            )}
+            {data.role.role === "admin" &&
+              <>
+                {location.pathname.slice(0, 6) === "/admin" ? (
+                  <Link to="/admin" className={styles.linkSidebarActive}>
+                    <img src={UserColor} alt="icon sidebar" className={styles.iconSidebar} />
+                    <h5 className={styles.textColor}>Admin</h5>
+                  </Link>
+                ) : (
+                  <Link to="/admin" className={styles.linkSidebar}>
+                    <img src={UserDark} alt="icon sidebar" className={styles.iconSidebar} />
+                    <h5 className={styles.text}>Admin</h5>
+                  </Link>
+                )}
+              </>
+            }
+
+
+            {location.pathname.slice(0, 7) === "/docs" ? (
+              <a href="http://localhost:3002/" className={styles.linkSidebarActive}>
+                <MdDocumentScanner className={styles.iconSidebar} />
+                <h5 className={styles.textColor}>Docs</h5>
+              </a>
+            ) : (
+              <a href="http://localhost:3002/" className={styles.linkSidebar}>
+                <MdDocumentScanner className={styles.iconSidebar} />
+                <h5 className={styles.text}>Docs</h5>
+              </a>
             )}
             {/* {location.pathname.slice(0, 9) === "/setting" ? (
           <Link to="/setting" className={styles.linkSidebarActive}>

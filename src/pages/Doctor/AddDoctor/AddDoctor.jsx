@@ -73,7 +73,7 @@ function AddDoctor(props) {
       .then(function (response) {
         // post doctor
         var dataBody2 = JSON.stringify({
-          strNumber: user.strNumber,
+          strNumber: user.strNumber.toString(),
           birthDate: null,
           address: null,
           specialization: null,
@@ -180,7 +180,7 @@ function AddDoctor(props) {
               <label htmlFor="name" className={styles.formLabel}>
                 No STR
               </label>
-              <Input required type="text" name="strNumber" value={user.strNumber} onChange={handleChange} className={styles.formControl} />
+              <Input required type="number" name="strNumber" value={user.strNumber} onChange={handleChange} className={styles.formControl} />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="email" className={styles.formLabel}>
@@ -189,10 +189,10 @@ function AddDoctor(props) {
               <Input required type="email" name="email" value={user.email} onChange={handleChange} className={styles.formControl} />
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="whatsapp" className={styles.formLabel}>
+              <label  htmlFor="whatsapp" className={styles.formLabel}>
                 No Whatsapp
               </label>
-              <Input required type="number" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className={styles.formControl} />
+              <Input addonBefore="+62" required type="number" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className={styles.formControl} />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="gender" className={styles.formLabel}>

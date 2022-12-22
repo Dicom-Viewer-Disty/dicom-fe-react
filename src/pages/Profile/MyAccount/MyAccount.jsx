@@ -7,8 +7,9 @@ import DashboardLayout from "../../../layouts/dashboard-layout/DashboardLayout";
 import { DefaultAvatar, UserDark } from "../../../assets/assets";
 import styles from "./MyAccount.module.css";
 import ReactLoading from "react-loading";
-import { Timeline, message, Skeleton, Modal, Button, Space, Input, Tooltip, Select, Upload } from "antd";
+import { Timeline, message, Skeleton, Modal, Button, Space, Input, Tooltip, Select, Upload, Image } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { ToastContainer, toast } from 'react-toastify';
 //var
 const { Option } = Select;
 function MyAccount(props) {
@@ -21,7 +22,7 @@ function MyAccount(props) {
     name: "",
     email: "",
     gender: "L",
-    phoneNumber: 1,
+    phoneNumber: 0,
   });
   const [profilePic, setProfilePic] = useState(null);
   const [loadingLogin, setLoadingLogin] = useState(false);
@@ -39,6 +40,7 @@ function MyAccount(props) {
       ...user,
       [event.target.name]: event.target.value,
     });
+    console.log(user)
   };
 
   const handleChangeGender = (event) => {
@@ -65,9 +67,11 @@ function MyAccount(props) {
           name: response.data.name,
           email: response.data.email,
           gender: response.data.gender,
-          phoneNumber: response.data.phoneNumber.slice(2),
+          phoneNumber: response.data.phoneNumber,
+          profileImage: response.data.profileImage
         });
         setLoading(false);
+        console.log(user);
       })
       .catch(function (error) {
         setLoading(false);
@@ -75,37 +79,80 @@ function MyAccount(props) {
   }, []);
 
   const updateProfile = () => {
-    var dataBody = JSON.stringify({
-      "name": user.name,
-      "email": user.email,
-      "gender": user.gender,
-      "phoneNumber": "62" + user.phoneNumber,
-    });
+    setLoadingLogin(true);
+    var dataBody = new FormData();
+    dataBody.append('name', user.name);
+    dataBody.append('email', user.email);
+    dataBody.append('gender', user.gender);
+    dataBody.append('phoneNumber', user.phoneNumber);
+    dataBody.append('profileImage', profilePic);
 
     var config = {
       method: 'patch',
       url: `${BASE_API_URL}/user/${data.id}`,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'multipart/form-data',
       },
       data: dataBody
     };
 
     axios(config)
       .then(function (response) {
-        alert("berhasil")
+        toast.success('Edit Profile Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+        setLoadingLogin(false);
       })
       .catch(function (error) {
         console.log(error);
-        alert("gagal")
+        toast.error('Edit Profile Gagal', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setLoadingLogin(false);
       });
   };
+
+
+  const imageChange = (e) => {
+    setProfilePic(e.target.files[0]);
+    setEditable(true);
+  }
+
   return (
     <div className={styles.wrapper}>
       {loading ? (
         <Skeleton />
       ) : (
         <div className={styles.container}>
+          <ToastContainer
+            position="top-center"
+            autoClose={1500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <div className={styles.topWrapper}>
             <h3 className={styles.title}>Profil Saya</h3>
             <p className={styles.titleDesc}>Kelola informasi profil Anda untuk mengontrol, melindungi dan mengamankan akun</p>
@@ -114,19 +161,12 @@ function MyAccount(props) {
           <div className={styles.detailContainer}>
             <div className={styles.leftDetail}>
               <div className={styles.detailGroupPicture}>
-                {/* <div className={styles.profileContainer}>
-                  {profilePic === null ? (
-                    <>{data.profileImage === null ? <img src={DefaultAvatar} alt="avatar" className={styles.profilePicItem} /> : <img src={data.profileImage} alt="avatar" className={styles.profilePicItem} />}</>
-                  ) : (
-                    <>
-                      <img src={image} alt="avatar" className={styles.profilePicItem} />
-                    </>
-                  )}
-                </div> */}
-                {/* <input className={styles.fileInput} type="file" accept="image/*" name="photo_profile" onChange={imageChange} /> */}
-                {/* <Upload {...uploadProps}>
-                  <Button icon={<UploadOutlined />}>Ubah gambar</Button>
-                </Upload> */}
+                <div className={styles.profileContainer}>
+                  {
+                    profilePic === null ? <Image src={`http://localhost:3000/${user.profileImage}`} alt="avatar" className={styles.profilePicItem} /> : <Image src={URL.createObjectURL(profilePic)} className={styles.profilePicItem} />
+                  }
+                </div>
+                <input accept=".png, .jpeg, .jpg" className={styles.fileInput} type="file" name="photo_profile" onChange={imageChange} />
               </div>
               <div className={styles.detailGroup}>
                 <p className={styles.detailTitle}>Nama</p>
@@ -145,7 +185,7 @@ function MyAccount(props) {
               </div>
               <div className={styles.detailGroup}>
                 <p className={styles.detailTitle}>No Telepon</p>
-                <Input addonBefore="+62" value={user.phoneNumber} name="phoneNumber" type="number" className={styles.formControl} />
+                <Input addonBefore="+62" value={user.phoneNumber} name="phoneNumber" type="number" className={styles.formControl} onChange={handleChange} />
               </div>
               <div className={styles.btnContainer}>
                 {editable === true ? (

@@ -64,6 +64,14 @@
   border-radius: 8px;
 }
 
+.fotoDetailInfo {
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
 .imageItemProfile {
   width: 150px;
   min-height: 150px;
@@ -77,7 +85,6 @@
 
 .city {
   font-size: 16px;
-  margin-top: 16px;
 }
 
 /* main detail */
@@ -114,14 +121,6 @@
   margin-top: 16px;
 }
 
-.fotoDetailInfo {
-  text-align: center;
-  margin-top: 8px;
-  font-weight: 700;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.85);
-}
-
 .mainLeftData {
   flex: 1;
 }
@@ -148,7 +147,7 @@
   background-color: #fff;
   padding: 16px;
   border-radius: 8px;
-  height: 150px;
+  height: 275px;
 }
 
 .statusReject {
@@ -222,33 +221,4 @@
   .container {
     width: 1150px;
   }
-}
-
-.inputMenu[type="file"] {
-  display: none;
-}
-
-.dicomInput {
-  border: none;
-  margin: 8px 0px;
-}
-
-.dicomFileContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.dicomFileCard {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid rgb(21, 21, 21);
-  padding: 8px;
-  border-radius: 4px;
-}
-
-.iconActionDelete {
-  font-size: 20px;
-  color: #d70137;
 }

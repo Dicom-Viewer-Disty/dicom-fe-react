@@ -14,13 +14,17 @@ import ReactLoading from "react-loading";
 import { Typography, Breadcrumbs } from "@mui/material";
 import { Select, Image, Timeline, Input, Tooltip, Skeleton, message } from "antd";
 import { FaUserAlt, FaImage } from "react-icons/fa";
-import { RiEBikeFill, RiBankCard2Fill } from "react-icons/ri";
+import { RiEBikeFill, RiBankCard2Fill, RiLockPasswordFill } from "react-icons/ri";
 import { DefaultAvatar } from "../../../assets/assets";
 //var
 const { TextArea } = Input;
 const { Option } = Select;
 function EditDoctor(props) {
     const [status, setStatus] = useState("");
+    const [password, setPassword] = useState({
+        current_password: "",
+        new_password: "",
+    });
     const [detail, setDetail] = useState({});
     const [loading, setLoading] = useState(true);
     const [loadingConfirm, setLoadingConfirm] = useState(false);
@@ -99,12 +103,28 @@ function EditDoctor(props) {
 
 
     const updateUser = () => {
-        var dataUser = JSON.stringify({
-            "name": user.name,
-            "email": user.email,
-            "gender": user.gender,
-            "phoneNumber": user.phoneNumber,
-        });
+        // var dataUser = JSON.stringify({
+        //     "name": user.name,
+        //     "email": user.email,
+        //     "gender": user.gender,
+        //     "phoneNumber": user.phoneNumber,
+        // });
+
+        var dataUser = new FormData();
+        dataUser.append('name', user.name);
+        dataUser.append('email', user.email);
+        dataUser.append('gender', user.gender);
+        dataUser.append('phoneNumber', user.phoneNumber);
+        // dataUser.append('profileImage', profilePic);
+
+        // var config = {
+        //     method: 'patch',
+        //     url: `${BASE_API_URL}/user/${data.id}`,
+        //     headers: { 
+        //         'Content-Type': 'multipart/form-data',
+        //     },
+        //     data : dataBody
+        // };
 
         var dataDoctor = JSON.stringify({
             "strNumber": doctor.strNumber,
@@ -118,7 +138,7 @@ function EditDoctor(props) {
             method: 'patch',
             url: `${BASE_API_URL}/user/${detail.userId}`,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data',
             },
             data: dataUser
         };
@@ -179,6 +199,67 @@ function EditDoctor(props) {
                     progress: undefined,
                     theme: "light",
                 });
+            });
+    }
+
+    const handleChangePassword = (event) => {
+        setPassword({
+            ...password,
+            [event.target.name]: event.target.value,
+        });
+        // if (event.target.value !== "") {
+        //     setEditable(true);
+        // } else {
+        //     setEditable(false);
+        // }
+    };
+
+    const updatePassword = () => {
+        setLoadingConfirm(true)
+        var dataBody = JSON.stringify({
+            "password": password.current_password,
+            "confirmPassword": password.new_password
+        });
+
+        var config = {
+            method: 'patch',
+            url: `${BASE_API_URL}/password/${detail.userId}`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: dataBody
+        };
+
+        axios(config)
+            .then(function (response) {
+                toast.success('Ubah Kata Sandi Berhasil', {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+                setLoadingConfirm(false);
+            })
+            .catch(function (error) {
+                console.log(error);
+                toast.error('Konfirmasi Password Tidak Cocok', {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                setLoadingConfirm(false);
             });
     }
 
@@ -259,7 +340,7 @@ function EditDoctor(props) {
                                             </div>
                                             <div className={styles.formField}>
                                                 <p className={styles.titleDetail}>No Whatsapp</p>
-                                                <Input type="number" value={user.phoneNumber} name="phoneNumber" onChange={handleChange} />
+                                                <Input addonBefore="+62" type="number" value={user.phoneNumber} name="phoneNumber" onChange={handleChange} />
                                             </div>
                                             <div className={styles.formField}>
                                                 <p className={styles.titleDetail}>Alamat</p>
@@ -276,6 +357,25 @@ function EditDoctor(props) {
                                         </div>
                                     </div>
                                     <button onClick={updateUser} className={styles.btnSave}>Simpan</button>
+                                </div>
+                                <div className={styles.mainUserDetail}>
+                                    <div className={styles.mainTitle}>
+                                        <RiLockPasswordFill className={styles.mainTitleIcon} />
+                                        <h4 className={styles.mainTitleText}>Ubah Kata Sandi</h4>
+                                    </div>
+                                    <div className={styles.mainDetailData}>
+                                        <div className={styles.mainLeftData}>
+                                            <div className={styles.detailGroup}>
+                                                <p className={styles.detailTitle}>Kata Sandi Baru</p>
+                                                <Input.Password required onChange={handleChangePassword} name="current_password" value={password.current_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
+                                            </div>
+                                            <div className={styles.detailGroup}>
+                                                <p className={styles.detailTitle}>Konfirmasi Kata Sandi</p>
+                                                <Input.Password required onChange={handleChangePassword} name="new_password" value={password.new_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button onClick={updatePassword} className={styles.btnSave}>Ubah</button>
                                 </div>
                             </div>
                         </div>

@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Input, message } from "antd";
 import axios from "axios";
 import ReactLoading from "react-loading";
-import { BASE_API_URL } from "../../../constant/url";
+import { BASE_API_URL } from "../../../helper/url";
 import { EyeInvisibleOutlined, EyeTwoTone } from "../../../assets/assets";
 import styles from "./ResetPassword.module.css";
+import { ToastContainer, toast } from 'react-toastify';
 function ResetPassword(props) {
   const [password, setPassword] = useState({
     current_password: "",
     new_password: "",
   });
+  const user = JSON.parse(localStorage.getItem("user"));
   const [editable, setEditable] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [next, setNext] = useState(false);
@@ -20,67 +22,84 @@ function ResetPassword(props) {
       ...password,
       [event.target.name]: event.target.value,
     });
-    setEditable(true);
-    if (password.current_password !== "") {
-      setNext(true);
-    } else {
-      setNext(false);
-      setPassword({
-        new_password: "",
-      });
+    if(event.target.value !== ""){
+      setEditable(true);
+    }else{
+      setEditable(false);
     }
-
     //check regex
-    if (strongRegex.test(password.new_password)) {
-      setStrongPassword(true);
-    } else {
-      setStrongPassword(false);
-    }
+    // if (strongRegex.test(password.current_password)) {
+    //   setStrongPassword(true);
+    // } else {
+    //   setStrongPassword(false);
+    // }
     // console.log(password);
   };
 
   const changePassword = () => {
     setLoadingSubmit(true);
-    const dataBody = new FormData();
-    dataBody.append("current_password", password.current_password);
-    dataBody.append("new_password", password.new_password);
+    var dataBody = JSON.stringify({
+      "password": password.current_password,
+      "confirmPassword": password.new_password
+    });
 
     var config = {
-      method: "post",
-      url: `${BASE_API_URL}/api/v1/profile/update-password`,
-      headers: {
-        Accept: "application/json",
-        "content-type": "multipart/form-data",
-        Authorization: `${localStorage.getItem("TOKEN")}`,
+      method: 'patch',
+      url: `${BASE_API_URL}/password/${user.id}`,
+      headers: { 
+        'Content-Type': 'application/json'
       },
-      data: dataBody,
+      data : dataBody
     };
 
     axios(config)
-      .then(function (response) {
-        message.success("Kata sandi berhasil diubah");
-        setLoadingSubmit(false);
-        window.location.reload();
-      })
-      .catch(function (error) {
-        // console.log(error.response);
-        setLoadingSubmit(false);
-        if (error.response.data === undefined) {
-          message.error(`Error 500: Ada masalah pada server, "masalah tidak diketahui"`);
-        } else if (!strongRegex.test(password.new_password)) {
-          message.error("Kata sandi baru harus terdiri dari minimal 8 karakter. Kombinasi antara huruf kecil, kapital, dan angka");
-        } else if (error.response.data.statusCode === 4001) {
-          message.error("Kata sandi lama salah");
-        } else if (error.response.data === 500 || error.response.status === 500) {
-          message.error(`Error ${error.response.status}: Ada masalah pada server, "${error.response.data.message}"`, 3);
-        } else {
-          message.error(`Error tidak diketahui, kesalahan pada server`);
-        }
+    .then(function (response) {
+       toast.success('Ubah Kata Sandi Berhasil', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+      setLoadingSubmit(false);
+    })
+    .catch(function (error) {
+      console.log(error);
+      toast.error('Konfirmasi Password Tidak Cocok', {
+          position: "top-center",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+      });
+      setLoadingSubmit(false);
+    });
+
   };
 
   return (
     <div className={styles.wrapper}>
+      <ToastContainer
+                position="top-center"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
       <div className={styles.container}>
         <div className={styles.topWrapper}>
           <h3 className={styles.title}>Ubah Kata Sandi</h3>
@@ -90,25 +109,16 @@ function ResetPassword(props) {
         <div className={styles.detailContainer}>
           <div className={styles.leftDetail}>
             <div className={styles.detailGroup}>
-              <p className={styles.detailTitle}>Kata Sandi Lama</p>
+              <p className={styles.detailTitle}>Kata Sandi Baru</p>
               <Input.Password required onChange={handleChange} name="current_password" value={password.current_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
             </div>
-            {next ? (
-              <>
-                <div className={styles.detailGroup}>
-                  <p className={styles.detailTitle}>Kata Sandi Baru</p>
-                  <Input.Password required onChange={handleChange} name="new_password" value={password.new_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
-                </div>
-              </>
-            ) : (
-              <div className={styles.detailGroup}>
-                <p className={styles.detailTitle}>Kata Sandi Baru</p>
-                <Input.Password disabled onChange={handleChange} name="new_password" value={password.new_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
-              </div>
-            )}
+            <div className={styles.detailGroup}>
+              <p className={styles.detailTitle}>Konfirmasi Kata Sandi</p>
+              <Input.Password required onChange={handleChange} name="new_password" value={password.new_password} className={styles.formControl} iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} />
+            </div>
             <div className={styles.detailGroup}>
               <div className={styles.detailTitle}></div>
-              {password.new_password !== "" && (
+              {/* {password.current_password !== "" && (
                 <>
                   {!strongPassword && (
                     <p className={styles.formControl} style={{ fontSize: "14px" }}>
@@ -116,7 +126,7 @@ function ResetPassword(props) {
                     </p>
                   )}
                 </>
-              )}
+              )} */}
             </div>
 
             {/* <Input type="text" className={styles.formControl} name="name" value={user.name} onChange={handleChange} /> */}

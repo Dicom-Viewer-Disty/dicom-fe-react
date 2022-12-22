@@ -13,6 +13,11 @@ const DetailPatient = lazy(() => import("./pages/Patient/DetailPatient/Detailpat
 const AddPatient = lazy(() => import("./pages/Patient/AddPatient/AddPatient"));
 const EditPatient = lazy(() => import("./pages/Patient/EditPatient/EditPatient"));
 
+const Admin = lazy(() => import("./pages/Admin/Admin/Admin"));
+const AddAdmin = lazy(() => import("./pages/Admin/AddAdmin/AddAdmin"));
+const DetailAdmin = lazy(() => import("./pages/Admin/DetailAdmin/DetailAdmin"));
+const EditAdmin = lazy(() => import("./pages/Admin/EditAdmin/EditAdmin"));
+
 const Setting = lazy(() => import("./pages/Settings/pengaturan/Setting"));
 const Profile = lazy(() => import("./pages/Profile/Profile/Profile"));
 export const APP_ROUTE = [
@@ -65,7 +70,7 @@ export const APP_ROUTE = [
     component: DetailPatient,
     private: true,
   },
-   {
+  {
     name: "EditPatient",
     path: "/pasien/edit-pasien/:id",
     exact: true,
@@ -105,6 +110,34 @@ export const APP_ROUTE = [
     path: "/dokter/edit-dokter/:id",
     exact: true,
     component: EditDoctor,
+    private: true,
+  },
+  {
+    name: "Admin",
+    path: "/admin",
+    exact: true,
+    component: Admin,
+    private: true,
+  },
+  {
+    name: "AddAdmin",
+    path: "/admin/tambah-admin",
+    exact: true,
+    component: AddAdmin,
+    private: true,
+  },
+  {
+    name: "DetailAdmin",
+    path: "/admin/detail-admin/:id",
+    exact: true,
+    component: DetailAdmin,
+    private: true,
+  },
+  {
+    name: "EditAdmin",
+    path: "/admin/edit-admin/:id",
+    exact: true,
+    component: EditAdmin,
     private: true,
   },
   {

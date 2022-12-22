@@ -375,7 +375,7 @@ function DetailPatient(props) {
             <div className={styles.leftContainer}>
               <div className={styles.profile}>
                 <div className={styles.imageBoxProfile}>
-                  <Image src={detail.profileImage} className={styles.imageItemProfile} />
+                  <Image src={`http://localhost:3000/${detail.profileImage}`} className={styles.imageItemProfile} />
                 </div>
                 <div className={styles.topProfileText}>
                   <h5 className={styles.name}>{detail.name}</h5>
@@ -674,6 +674,13 @@ function DetailPatient(props) {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className={styles.status}>
+              <div>
+                <div className={styles.statusTitle}>Status Pasien</div>
+                <p className={styles.textTimeline}>Dibuat pada : {detail.createdAt.slice(0, 10)}</p>
+                <p className={styles.textTimeline}>Dibuat oleh : {detail.user.name}</p>
               </div>
             </div>
           </div>

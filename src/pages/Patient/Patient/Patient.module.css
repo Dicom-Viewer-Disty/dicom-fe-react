@@ -155,14 +155,14 @@
   }
 }
 
-.statistikContainer {
+/* .statistikContainer {
   background: #fff;
   margin-top: 24px;
   padding: 24px;
   -webkit-box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
   box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
   border-radius: 2px;
-}
+} */
 
 .statistikTitle {
   font-size: 18px;
@@ -273,8 +273,6 @@
   color: #fff;
 }
 
-
-
 .iconActionView {
   font-size: 20px;
   color: green;
@@ -289,3 +287,16 @@
   color: #d70137;
 }
 
+.searchContainer {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.searchBtn {
+  background-color: #d70137;
+  border: none;
+  border-radius: 4px;
+  padding: 0px 24px !important;
+  color: #fff;
+}
